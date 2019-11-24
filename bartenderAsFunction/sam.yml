@@ -4,137 +4,137 @@ Description: AWS SAM template for bartender hands-on
 Parameters:
   User:
     Type: String
-    Default: userDevoxx
+    Default: _A_USER_TO_SET_
   Bucket:
     Type: String
     Default: handsonbartender
 Resources:
-  # LambdaRegisterClient:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Timeout: 10
-  #     Runtime: go1.x
-  #     Handler: bin/registerClient
-  #     Policies:
-  #     - AWSIoTThingsRegistration
-  #     - AWSIoTConfigAccess
-  #     - AWSIoTDataAccess
-  #     Events:
-  #       CommandsGet:
-  #         Type: Api
-  #         Properties:
-  #           RestApiId: !Ref Bartender
-  #           Path: /client
-  #           Method: POST
-  #     Environment:
-  #       Variables:
-  #         POLICY_DRUNK_CLIENT: !Ref PolicyDrunkClient
-  # LambdaRuleReadCommandBeer:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Timeout: 10
-  #     Runtime: go1.x
-  #     Handler: bin/readCommandBeer
-  #     Policies:
-  #     - AWSIoTThingsRegistration
-  #     - AWSIoTConfigAccess
-  #     - AWSIoTDataAccess
-  #     - DynamoDBCrudPolicy:
-  #         TableName: !Sub ${User}-Command
-  #     Environment:
-  #       Variables:
-  #         TABLE_COMMANDS: !Sub ${User}-Command
-  #     Events:
-  #       EventCommandReception:
-  #         Type: IoTRule
-  #         Name: IotRuleCommandBeerReception
-  #         Properties:
-  #           AwsIotSqlVersion: "2016-03-23"
+  #LambdaRegisterClient:
+  #  Type: AWS::Serverless::Function
+  #  Properties:
+  #    Timeout: 10
+  #    Runtime: go1.x
+  #    Handler: bin/registerClient
+  #    Policies:
+  #    - AWSIoTThingsRegistration
+  #    - AWSIoTConfigAccess
+  #    - AWSIoTDataAccess
+  #    Events:
+  #      CommandsGet:
+  #        Type: Api
+  #        Properties:
+  #          RestApiId: !Ref Bartender
+  #          Path: /client
+  #          Method: POST
+  #    Environment:
+  #      Variables:
+  #        POLICY_DRUNK_CLIENT: !Ref PolicyDrunkClient
+  #LambdaRuleReadCommandBeer:
+  #  Type: AWS::Serverless::Function
+  #  Properties:
+  #    Timeout: 10
+  #    Runtime: go1.x
+  #    Handler: bin/readCommandBeer
+  #    Policies:
+  #    - AWSIoTThingsRegistration
+  #    - AWSIoTConfigAccess
+  #    - AWSIoTDataAccess
+  #    - DynamoDBCrudPolicy:
+  #        TableName: !Sub ${User}-Command
+  #    Environment:
+  #      Variables:
+  #        TABLE_COMMANDS: !Sub ${User}-Command
+  #    Events:
+  #      EventCommandReception:
+  #        Type: IoTRule
+  #        Name: IotRuleCommandBeerReception
+  #        Properties:
+  #          AwsIotSqlVersion: "2016-03-23"
   ##ADD the sql-like rule to trigger the event. HINT: read from the topic topics/IDCLIENT/topic_drunk
   ##           Sql: "SELECT *, topic(2) as client FROM 'topics/+/topic_drunk' where beer.amount > 0"
-  # LambdaRuleReadCommandFood:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Timeout: 10
-  #     Runtime: go1.x
-  #     Handler: bin/readCommandFood
-  #     Policies:
-  #     - AWSIoTThingsRegistration
-  #     - AWSIoTConfigAccess
-  #     - AWSIoTDataAccess
-  #     - DynamoDBCrudPolicy:
-  #         TableName: !Sub ${User}-Command
-  #     Environment:
-  #       Variables:
-  #         TABLE_COMMANDS: !Sub ${User}-Command
-  #     Events:
-  #       EventCommandReception:
-  #         Type: IoTRule
-  #         Name: IotRuleCommandFoodReception
-  #         Properties:
-  #           AwsIotSqlVersion: "2016-03-23"
+  #LambdaRuleReadCommandFood:
+  #  Type: AWS::Serverless::Function
+  #  Properties:
+  #    Timeout: 10
+  #    Runtime: go1.x
+  #    Handler: bin/readCommandFood
+  #    Policies:
+  #    - AWSIoTThingsRegistration
+  #    - AWSIoTConfigAccess
+  #    - AWSIoTDataAccess
+  #    - DynamoDBCrudPolicy:
+  #        TableName: !Sub ${User}-Command
+  #    Environment:
+  #      Variables:
+  #        TABLE_COMMANDS: !Sub ${User}-Command
+  #    Events:
+  #      EventCommandReception:
+  #        Type: IoTRule
+  #        Name: IotRuleCommandFoodReception
+  #        Properties:
+  #          AwsIotSqlVersion: "2016-03-23"
   ##ADD the sql-like rule to trigger the event. HINT: read from the topic topics/IDCLIENT/topic_drunk  
   ##           Sql: "SELECT *,topic(2) as client FROM 'topics/+/topic_drunk' where food.amount > 0"
-  # LambdaGetCommands:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Timeout: 10
-  #     Runtime: go1.x
-  #     Handler: bin/getCommand
-  #     Policies:
-  #     - DynamoDBCrudPolicy:
-  #         TableName: !Sub ${User}-Command
-  #     Environment:
-  #       Variables:
-  #         TABLE_COMMANDS: !Sub ${User}-Command
-  #     Events:
-  #       CommandsGet:
-  #         Type: Api
-  #         Properties:
-  #           RestApiId: !Ref Bartender
-  #           Path: /command
-  #           Method: GET
-  # LambdaBarStatus:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Timeout: 10
-  #     Runtime: go1.x
-  #     Handler: bin/changeBarStatus
-  #     Policies:
-  #     - AWSIoTThingsRegistration
-  #     - AWSIoTConfigAccess
-  #     - AWSIoTDataAccess
-  #     - DynamoDBCrudPolicy:
-  #         TableName: !Sub ${User}-Command
-  #     Environment:
-  #       Variables:
-  #         TABLE_COMMANDS: !Sub ${User}-Command
-  #     Events:
-  #       CommandsGet:
-  #         Type: Api
-  #         Properties:
-  #           RestApiId: !Ref Bartender
-  #           Path: /client/{idClient}/close
-  #           Method: POST
-  # LambdaGetFacture:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Timeout: 10
-  #     Runtime: go1.x
-  #     Handler: bin/getFacture
-  #     Policies:
-  #     - DynamoDBCrudPolicy:
-  #         TableName: !Sub ${User}-Command
-  #     Environment:
-  #       Variables:
-  #         TABLE_COMMANDS: !Sub ${User}-Command
-  #     Events:
-  #       EventCommandReception:
-  #         Type: IoTRule
-  #         Name: IotRuleCommandFactureGeneration
-  #         Properties:
-  #           AwsIotSqlVersion: "2016-03-23"
-  #           Sql: "SELECT *,topic(2) as client FROM  '$aws/things/+/shadow/update/documents'"
+  #LambdaGetCommands:
+  #  Type: AWS::Serverless::Function
+  #  Properties:
+  #    Timeout: 10
+  #    Runtime: go1.x
+  #    Handler: bin/getCommand
+  #    Policies:
+  #    - DynamoDBCrudPolicy:
+  #        TableName: !Sub ${User}-Command
+  #    Environment:
+  #      Variables:
+  #        TABLE_COMMANDS: !Sub ${User}-Command
+  #    Events:
+  #      CommandsGet:
+  #        Type: Api
+  #        Properties:
+  #          RestApiId: !Ref Bartender
+  #          Path: /command
+  #          Method: GET
+  #LambdaBarStatus:
+  #  Type: AWS::Serverless::Function
+  #  Properties:
+  #    Timeout: 10
+  #    Runtime: go1.x
+  #    Handler: bin/changeBarStatus
+  #    Policies:
+  #    - AWSIoTThingsRegistration
+  #    - AWSIoTConfigAccess
+  #    - AWSIoTDataAccess
+  #    - DynamoDBCrudPolicy:
+  #        TableName: !Sub ${User}-Command
+  #    Environment:
+  #      Variables:
+  #        TABLE_COMMANDS: !Sub ${User}-Command
+  #    Events:
+  #      CommandsGet:
+  #        Type: Api
+  #        Properties:
+  #          RestApiId: !Ref Bartender
+  #          Path: /client/{idClient}/close
+  #          Method: POST
+  #LambdaGetFacture:
+  #  Type: AWS::Serverless::Function
+  #  Properties:
+  #    Timeout: 10
+  #    Runtime: go1.x
+  #    Handler: bin/getFacture
+  #    Policies:
+  #    - DynamoDBCrudPolicy:
+  #        TableName: !Sub ${User}-Command
+  #    Environment:
+  #      Variables:
+  #        TABLE_COMMANDS: !Sub ${User}-Command
+  #    Events:
+  #      EventCommandReception:
+  #        Type: IoTRule
+  #        Name: IotRuleCommandFactureGeneration
+  #        Properties:
+  #          AwsIotSqlVersion: "2016-03-23"
+  #          Sql: "SELECT *,topic(2) as client FROM  '$aws/things/+/shadow/update/documents'"
   Bartender:
     Type: AWS::Serverless::Api
     Properties:

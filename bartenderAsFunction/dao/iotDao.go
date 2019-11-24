@@ -4,12 +4,13 @@ import (
 	"bartenderAsFunction/model"
 	"encoding/json"
 	"fmt"
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/iot"
 	"github.com/aws/aws-sdk-go/service/iotdataplane"
-	"os"
 )
 
 type IotConnection struct {
@@ -27,12 +28,12 @@ type IotConnectionInterface interface {
 func (con *IotConnection) RegisterDevice(drunkClient *model.DrunkClient) error {
 	var input iot.CreateKeysAndCertificateInput
 	input.SetSetAsActive(true)
-	
+
 	//TODO 4.1 create keys and certificate for the thing using CreateKeysAndCertificate of con.Iot (github.com/aws/aws-sdk-go/service/iot.Iot)
 	//output, errCert := con.Iot.CreateKeysAndCertificate(pointer to the input object)
-	errCert := fmt.Errorf("to delete")
-	if errCert != nil {
-		return errCert
+	err := fmt.Errorf("to delete")
+	if err != nil {
+		return err
 	}
 	//TODO 4.2 assign the output containing the certificate, private key, public key and pem to the "thing"(drunkClient) to create the thing
 	//drunkClient.CertificateArn = *output.CertificateArn
@@ -41,8 +42,7 @@ func (con *IotConnection) RegisterDevice(drunkClient *model.DrunkClient) error {
 	//drunkClient.CertificatePem = *output.CertificatePem
 
 	//TODO 4.3 explore this function to verify the thing creation
-	createLock(*drunkClient,con)
-	return nil
+	return createLock(*drunkClient, con)
 }
 
 func createLock(drunkClient model.DrunkClient, con *IotConnection) error {

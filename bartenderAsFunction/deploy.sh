@@ -3,7 +3,8 @@
 P_USER=$1
 
 if [[ -z "${P_USER}" ]]; then
-  P_USER=userDevoxx
+  echo "you should set an user"
+  exit 1
 fi
 
 aws s3api put-object --bucket handsonbartender --key $P_USER/swagger.yaml --body swagger.yaml --profile workshop

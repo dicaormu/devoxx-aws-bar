@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"bartenderAsFunction/dao"
 	"bartenderAsFunction/model"
 	"encoding/json"
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/satori/go.uuid"
@@ -13,12 +13,12 @@ import (
 var IotConnectionManager dao.IotConnectionInterface
 
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	//TODO 1 get the body form the request 
+	//TODO 1 get the body form the request
 	var body []byte
 	drunkClient := model.DrunkClient{}
 
 	//TODO 2 Use the json unmarshall to parse the body request into the drunkClient variable
-	err := "" // err:= json.Unmarshal([]byte(body), &drunkClient)
+	err := json.Unmarshal([]byte(body), &drunkClient)
 
 	//TODO 3 validate the error and retunr error 400. You can use events.APIGatewayProxyResponse
 	/*if err != nil {
@@ -32,7 +32,10 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	//TODO 4 go to the IotConnectionManager in dao/iotDao.go and implement the method RegisterDevice
 	IotConnectionManager.RegisterDevice(&drunkClient)
 	//assign an Id to the device when it does not have
-	b, _ := json.Marshal(drunkClient)
+	b, err := json.Marshal(drunkClient)
+	if err != nil {
+		return events.APIGatewayProxyResponse{StatusCode: 500}, err
+	}
 	return events.APIGatewayProxyResponse{StatusCode: 200, Body: string(b)}, nil
 }
 
