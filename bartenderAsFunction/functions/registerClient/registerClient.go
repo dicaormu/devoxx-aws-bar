@@ -18,13 +18,18 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	if err != nil {
 		return events.APIGatewayProxyResponse{StatusCode: 400}, err
 	}
+	//assign an Id to the device when it does not have
 	if drunkClient.IdClient == "" {
 		uid := uuid.NewV4()
 		drunkClient.IdClient = uid.String()
 	}
+
 	IotConnectionManager.RegisterDevice(&drunkClient)
-	//assign an Id to the device when it does not have
-	b, _ := json.Marshal(drunkClient)
+	b, err := json.Marshal(drunkClient)
+	if err != nil {
+		return events.APIGatewayProxyResponse{StatusCode: 500}, err
+	}
+
 	return events.APIGatewayProxyResponse{StatusCode: 200, Body: string(b)}, nil
 }
 

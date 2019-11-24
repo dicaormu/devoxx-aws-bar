@@ -4,12 +4,13 @@ import (
 	"bartenderAsFunction/model"
 	"encoding/json"
 	"fmt"
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/iot"
 	"github.com/aws/aws-sdk-go/service/iotdataplane"
-	"os"
 )
 
 type IotConnection struct {
@@ -26,16 +27,16 @@ type IotConnectionInterface interface {
 func (con *IotConnection) RegisterDevice(drunkClient *model.DrunkClient) error {
 	var input iot.CreateKeysAndCertificateInput
 	input.SetSetAsActive(true)
-	output, errCert := con.Iot.CreateKeysAndCertificate(&input)
-	if errCert != nil {
-		return errCert
+
+	output, err := con.Iot.CreateKeysAndCertificate(&input)
+	if err != nil {
+		return err
 	}
 	drunkClient.CertificateArn = *output.CertificateArn
 	drunkClient.PrivateKey = *output.KeyPair.PrivateKey
 	drunkClient.PublicKey = *output.KeyPair.PublicKey
 	drunkClient.CertificatePem = *output.CertificatePem
-	createLock(*drunkClient,con)
-	return nil
+	return createLock(*drunkClient, con)
 }
 
 func createLock(drunkClient model.DrunkClient, con *IotConnection) error {

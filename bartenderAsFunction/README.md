@@ -54,7 +54,7 @@ Don't worry, I've coded the client for you.
 4. Build and deploy your first lambda
 5. Go to the Aws console, to *Api Gateway* and in *stages* look for the URL of your api to use it.
 
-- sam.yml explains the configuration for all your resources: triggers, memmory, etc
+- sam.yml explains the configuration for all your resources: triggers, memory, etc
 
 ### Step 2
 When the client send a command, as waiter you have to:
